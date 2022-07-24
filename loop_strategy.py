@@ -4,8 +4,8 @@ from unicodedata import name
 from tqdm import tqdm
 
 # 初始化数据
-scale = 1000
-max_find = 500
+scale = 100
+max_find = 50
 
 # 初始化环
 
@@ -38,9 +38,22 @@ def loop_generate(prisoner_dict):
             break
     return flag
 
-# 建立随机搜索策略（尚未完成）
-def random_strategy(prisoner_card,prisoner_dict):
-    note = prisoner_dict[prisoner_card]
+# 建立随机搜索策略
+def random_strategy(prisoner_dict):
+    flag = 1 # 假设成功
+    for i in range(1,scale+1):
+        count = 1
+        find_path = [m for m in range(1,scale+1)] # 随机生成寻找路线
+        random.shuffle(find_path)
+        for j in find_path:
+            while prisoner_dict[j] != j:
+                count += 1
+                if count > max_find: # 未能找到标记失败
+                    flag = 0
+                    break
+        if flag == 0:
+            break
+    return flag
 
 # 建立策略（尚未完成）
 def loop_strategy(prisoner_card,prisoner_dict):
@@ -60,3 +73,10 @@ if __name__ == "__main__":
         if loop_generate(prisoner_dict) == 1:
             num_success += 1
     print(f"环策略成功概率：{num_success/num_simulate}")
+
+    # 随机策略模拟
+    for i in tqdm(range(num_simulate)):
+        prisoner_dict = loop_init(scale)
+        if random_strategy(prisoner_dict) == 1:
+            num_success += 1
+    print(f"随机策略成功概率：{num_success/num_simulate}")
