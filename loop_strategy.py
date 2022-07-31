@@ -74,6 +74,9 @@ if __name__ == "__main__":
             num_success += 1
     print(f"环策略成功概率：{num_success/num_simulate}")
 
+    # 成功次数初始化
+    num_success = 0
+
     # 随机策略模拟
     for i in tqdm(range(num_simulate)):
         prisoner_dict = loop_init(scale)
